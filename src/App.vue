@@ -4,11 +4,15 @@
       <p>Carrinho: {{cart.length}}</p>
     </div>
     <product :premium="premium" v-on:add-to-cart="updateCart"></product>
+    <shirt :premium="premium" v-on:add-to-cart="updateCart"></shirt>
   </div>
 </template>
 
 <script>
+
 import Product from './components/Product.vue'
+import shirt from './components/shirt.vue'
+
 export default {
   name: "App",
   data() {
@@ -18,7 +22,8 @@ export default {
     }
   },
   components: {
-    product: Product
+    product: Product,
+    shirt
   },
   methods: {
     updateCart(id){
@@ -27,6 +32,7 @@ export default {
   }
 
 };
+
 </script>
 
 <style>
