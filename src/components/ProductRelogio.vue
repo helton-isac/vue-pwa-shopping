@@ -1,15 +1,15 @@
 <template>
- <div class="product">
+  <div class="product">
 
     <div class="product-image">
       <img
-        :src="selectedImage"
-        title="imagem de Camisetas"
+        v-bind:src= variants[selectedVariant].variantImage
+        title="imagem de relógios"
       />
     </div>
 
     <div class="product-info">
-      <h1>Fiap Camisetas</h1>
+      <h1>FIAP Relógios de Luxo</h1>
       <p v-if="inStock">Em estoque</p>
       <p v-else>Indisponível</p>
 
@@ -26,21 +26,15 @@
 
       <div
         class="color-box"
-        :style="{backgroundColor: variant.variantBackgrounColor, color:variant.variantTextColor}"
+        :style="{backgroundColor: variant.variantColor}"
         v-for="(variant, index) in variants"
         :key="variant.variantId"
-        v-on:mouseover="setImage(index)"
-        :class="{selectedBox: index === selectedVariant}">
+        v-on:click="setChange(index)"
+      >
         <p>{{variant.variantColor}}</p>
       </div>
 
-      <shirt-size></shirt-size>
-
-      <button 
-        :disabled="!inStock"
-        :class="{disabledButton: !inStock}"
-        v-on:click="addToCart">Adicionar ao carrinho
-      </button>
+      <button v-on:click="addToCart">Adicionar ao carrinho</button>
       
     </div>
 
@@ -56,60 +50,49 @@
         </li>
       </ul>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
-import ShirtSize from './ShirtSize.vue';
 export default {
-  components: { ShirtSize },
-   name: "shirt",
-   data() {
+  name: "product",
+  data() {
     return {
-      product: "Camisetas Coloridas",
+      product: "Relógios de Luxo",
       brand: "Fiap",
-      inStock: true,
+      inStock: false,
       selectedVariant: 0,
-      selectedImage: require('../assets/white-shirt.jpg'),
       shipping: "Grátis",
       reviews: [],
-      alt: "imagem de camisetas",
-      details: ["88% algodão", "12% poliéster de garrafa PET"],
+      alt: "imagem de relógios",
+      details: ["70% gold", "30% silver", "Gender-neutral"],
       variants: [
         {
-          variantId: 5000,
-          variantColor: "Branco",
-          variantBackgrounColor: "white",
-          variantTextColor: "black",
-          variantImage: "white-shirt.jpg",
+          variantId: 2234,
+          variantColor: "silver",
+          variantImage:
+            "https://content.rolex.com/dam/2020/showcase/m128239-0005.jpg",
           variantQuantity: 10
         },
         {
-          variantId: 5001,
-          variantColor: "Preto",
-          variantBackgrounColor: "black",
-          variantTextColor: "white",
-          variantImage: "black-shirt.jpg",
+          variantId: 2235,
+          variantColor: "black",
+          variantImage:
+            "https://content.rolex.com/dam/2020/showcase/m50509-0016.jpg",
           variantQuantity: 0
-        },
-        {
-          variantId: 5002,
-          variantColor: "Vermelho",
-          variantBackgrounColor: "red",
-          variantTextColor: "white",
-          variantImage: "red-shirt.jpg",
-          variantQuantity: 10
-        },
+        }
       ]
     };
   },
   methods: {
       addToCart: function() {
+          // console.log("ddd")
           this.$emit("add-to-cart", this.variants[this.selectedVariant].variantId)
       },
-      setImage: function(index) {
-        this.selectedVariant = index;
-        this.selectedImage = require('../assets/' + this.variants[this.selectedVariant].variantImage)
+      setChange(index) {
+        this.selectedVariant = index
+        // console.log('Teste', index)
+        this.inStock = this.variants[this.selectedVariant].variantQuantity > 0
       }
   }
 };
@@ -133,7 +116,7 @@ body {
 }
 
 img {
-  border: 1px solid #d8d8d8;
+  border: 1px solid #e6a4a4;
   width: 70%;
   margin: 40px;
   box-shadow: 0px 0.5px 1px #d8d8d8;
@@ -143,49 +126,33 @@ img {
   flex-basis: 700px;
 }
 
-.product-image > img {
-  flex-basis: 700px;
-  border-radius: 30%;
-}
-
 .product-info {
   margin-top: 10px;
   flex-basis: 500px;
 }
 
 .color-box {
-  width: 80px;
+  width: 40px;
   height: 40px;
   margin-top: 5px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.color-box:hover {
-  border: 1px solid #000000;
-  border-radius: 5px;
-}
-
-.selectedBox {
-  border: 2px solid gray;
-  border-radius: 5px;
 }
 
 .cart {
   margin-right: 25px;
   float: right;
-  border: 1px solid #d8d8d8;
+  border: 1px solid #994949;
   padding: 5px 20px;
 }
 
 button {
   margin-top: 30px;
   border: none;
-  background-color: #1e95ea;
+  background-color: #414141;
   color: white;
   height: 40px;
   width: 100px;
   font-size: 14px;
+  border-radius: 10px;
 }
 
 .disabledButton {

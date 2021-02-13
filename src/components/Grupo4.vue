@@ -1,15 +1,15 @@
 <template>
- <div class="product">
+  <div class="product">
 
     <div class="product-image">
       <img
         :src="selectedImage"
-        title="imagem de Camisetas"
+        title="imagem de apple watch"
       />
     </div>
 
     <div class="product-info">
-      <h1>Fiap Camisetas</h1>
+      <h1>Fiap Apple Watch</h1>
       <p v-if="inStock">Em estoque</p>
       <p v-else>Indisponível</p>
 
@@ -26,7 +26,7 @@
 
       <div
         class="color-box"
-        :style="{backgroundColor: variant.variantBackgrounColor, color:variant.variantTextColor}"
+        :style="{backgroundColor: variant.variantColor}"
         v-for="(variant, index) in variants"
         :key="variant.variantId"
         v-on:mouseover="setImage(index)"
@@ -34,7 +34,7 @@
         <p>{{variant.variantColor}}</p>
       </div>
 
-      <shirt-size></shirt-size>
+      <cep-search v-if="inStock"></cep-search>
 
       <button 
         :disabled="!inStock"
@@ -56,56 +56,56 @@
         </li>
       </ul>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
-import ShirtSize from './ShirtSize.vue';
+import CepSearch from './CepSearch.vue';
 export default {
-  components: { ShirtSize },
-   name: "shirt",
-   data() {
+  name: "grupo4",
+  data()
+    {
     return {
-      product: "Camisetas Coloridas",
+      product: "Apple Watch",
       brand: "Fiap",
       inStock: true,
       selectedVariant: 0,
-      selectedImage: require('../assets/white-shirt.jpg'),
+      selectedImage: require('../assets/apple_watch_01.jpg'),
       shipping: "Grátis",
       reviews: [],
-      alt: "imagem de camisetas",
-      details: ["88% algodão", "12% poliéster de garrafa PET"],
+      alt: "imagem de apple watch",
+      details: ["bluetooth", "44mm", "GPS"],
       variants: [
         {
-          variantId: 5000,
-          variantColor: "Branco",
-          variantBackgrounColor: "white",
-          variantTextColor: "black",
-          variantImage: "white-shirt.jpg",
-          variantQuantity: 10
+          variantId: 0,
+          variantColor: "black",
+          variantImage:
+          "apple_watch_01.jpg",
+          variantQuantity: 5
         },
         {
-          variantId: 5001,
-          variantColor: "Preto",
-          variantBackgrounColor: "black",
-          variantTextColor: "white",
-          variantImage: "black-shirt.jpg",
-          variantQuantity: 0
+          variantId: 1,
+          variantColor: "white",
+          variantImage:
+          "apple_watch_02.jpg",
+          variantQuantity: 5
         },
         {
-          variantId: 5002,
-          variantColor: "Vermelho",
-          variantBackgrounColor: "red",
-          variantTextColor: "white",
-          variantImage: "red-shirt.jpg",
+          variantId: 2,
+          variantColor: "pink",
+          variantImage:
+          "apple_watch_03.jpg",
           variantQuantity: 10
-        },
+        }
       ]
     };
   },
+  components: {
+      'cep-search': CepSearch,
+  },
   methods: {
       addToCart: function() {
-          this.$emit("add-to-cart", this.variants[this.selectedVariant].variantId)
+        this.$emit("add-to-cart", this.variants[this.selectedVariant].variantId)
       },
       setImage: function(index) {
         this.selectedVariant = index;
@@ -143,29 +143,21 @@ img {
   flex-basis: 700px;
 }
 
-.product-image > img {
-  flex-basis: 700px;
-  border-radius: 30%;
-}
-
 .product-info {
   margin-top: 10px;
   flex-basis: 500px;
 }
 
 .color-box {
-  width: 80px;
+  width: 40px;
   height: 40px;
   margin-top: 5px;
   border-radius: 5px;
-  text-align: center;
 }
-
 .color-box:hover {
   border: 1px solid #000000;
   border-radius: 5px;
 }
-
 .selectedBox {
   border: 2px solid gray;
   border-radius: 5px;

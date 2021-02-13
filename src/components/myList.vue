@@ -1,15 +1,15 @@
 <template>
- <div class="product">
+  <div class="product">
 
     <div class="product-image">
       <img
-        :src="selectedImage"
-        title="imagem de Camisetas"
+        src="https://s2.glbimg.com/h0SZiAh2fvXUS454guLFvyfFAYk=/620x350/e.glbimg.com/og/ed/f/original/2019/01/15/tenis.jpg"
+        title="imagem de meias"
       />
     </div>
 
     <div class="product-info">
-      <h1>Fiap Camisetas</h1>
+      <h1>Fiap Meias Coloridas</h1>
       <p v-if="inStock">Em estoque</p>
       <p v-else>Indisponível</p>
 
@@ -25,22 +25,16 @@
       <h3>Cores</h3>
 
       <div
+      v-on:mouseover="changeVariant"
         class="color-box"
-        :style="{backgroundColor: variant.variantBackgrounColor, color:variant.variantTextColor}"
-        v-for="(variant, index) in variants"
+        :style="{backgroundColor: variant.variantColor}"
+        v-for="variant in variants"
         :key="variant.variantId"
-        v-on:mouseover="setImage(index)"
-        :class="{selectedBox: index === selectedVariant}">
+      >
         <p>{{variant.variantColor}}</p>
       </div>
 
-      <shirt-size></shirt-size>
-
-      <button 
-        :disabled="!inStock"
-        :class="{disabledButton: !inStock}"
-        v-on:click="addToCart">Adicionar ao carrinho
-      </button>
+      <button v-on:click="addToCart">Adicionar ao carrinho</button>
       
     </div>
 
@@ -56,61 +50,49 @@
         </li>
       </ul>
     </div>
-  </div>  
+  </div>
 </template>
 
 <script>
-import ShirtSize from './ShirtSize.vue';
 export default {
-  components: { ShirtSize },
-   name: "shirt",
-   data() {
+  name: "product",
+  data() {
     return {
-      product: "Camisetas Coloridas",
+      product: "Meias Coloridas",
       brand: "Fiap",
-      inStock: true,
+      inStock: false,
       selectedVariant: 0,
-      selectedImage: require('../assets/white-shirt.jpg'),
       shipping: "Grátis",
       reviews: [],
-      alt: "imagem de camisetas",
-      details: ["88% algodão", "12% poliéster de garrafa PET"],
+      alt: "imagem de meias",
+      details: ["80% cotton", "20% polyester", "Gender-neutral"],
       variants: [
         {
-          variantId: 5000,
-          variantColor: "Branco",
-          variantBackgrounColor: "white",
-          variantTextColor: "black",
-          variantImage: "white-shirt.jpg",
+          variantId: 2234,
+          variantColor: "green",
+          variantImage:
+            "https://www.vuemastery.com/images/challenges/vmSocks-green-onWhite.jpg",
           variantQuantity: 10
         },
         {
-          variantId: 5001,
-          variantColor: "Preto",
-          variantBackgrounColor: "black",
-          variantTextColor: "white",
-          variantImage: "black-shirt.jpg",
+          variantId: 2235,
+          variantColor: "blue",
+          variantImage:
+            "https://www.vuemastery.com/images/challenges/vmSocks-blue-onWhite.jpg",
           variantQuantity: 0
-        },
-        {
-          variantId: 5002,
-          variantColor: "Vermelho",
-          variantBackgrounColor: "red",
-          variantTextColor: "white",
-          variantImage: "red-shirt.jpg",
-          variantQuantity: 10
-        },
+        }
       ]
     };
   },
   methods: {
       addToCart: function() {
+          console.log("ddd")
           this.$emit("add-to-cart", this.variants[this.selectedVariant].variantId)
       },
-      setImage: function(index) {
-        this.selectedVariant = index;
-        this.selectedImage = require('../assets/' + this.variants[this.selectedVariant].variantImage)
+      changeVariant: function() {
+          this.$emit("change-variant", this.variants[this.selectedVariant].variantId)
       }
+      
   }
 };
 </script>
@@ -120,6 +102,10 @@ body {
   font-family: tahoma;
   color: #282828;
   margin: 0px;
+}
+
+h1 {
+  color: #1a6801;
 }
 
 .nav-bar {
@@ -143,32 +129,15 @@ img {
   flex-basis: 700px;
 }
 
-.product-image > img {
-  flex-basis: 700px;
-  border-radius: 30%;
-}
-
 .product-info {
   margin-top: 10px;
   flex-basis: 500px;
 }
 
 .color-box {
-  width: 80px;
+  width: 40px;
   height: 40px;
   margin-top: 5px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.color-box:hover {
-  border: 1px solid #000000;
-  border-radius: 5px;
-}
-
-.selectedBox {
-  border: 2px solid gray;
-  border-radius: 5px;
 }
 
 .cart {
@@ -181,7 +150,7 @@ img {
 button {
   margin-top: 30px;
   border: none;
-  background-color: #1e95ea;
+  background-color: #c26e00;
   color: white;
   height: 40px;
   width: 100px;
